@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plupload 例子</title>
+    <meta charset="utf-8">
+    <link href="http://cdn.sencha.com/ext/gpl/4.2.0/resources/css/ext-all.css" rel="stylesheet" />
+    <script src="http://cdn.sencha.com/ext/gpl/4.2.0/ext-all.js"></script>
+    <script src="libs/plupload/js/plupload.full.min.js"></script>
+    <script src="ux/Plupload.js"></script>
+    <script src="ux/Button/PluploadButton.js"></script>
+    <script type="application/javascript">
+        Ext.onReady(function(){
+            Ext.create('Ext.ux.button.PluploadButton',{
+                renderTo:Ext.getBody(),
+                text: '上传图片',
+                pluploadConfig: {
+                    url: 'plupload.json',
+                    runtimes:'flash',
+                    flash_swf_url: 'libs/plupload/js/Moxie.swf',
+                    filters: {
+                        mime_types: [
+                            {
+                                title: "图片文件",
+                                extensions: "jpg,gif,png"
+                            }]
+                    },
+                    init: {
+                        QueueChanged: function (up) {
+                            Ext.MessageBox.wait('正在上传......');
+                            up.start();
+                        },
+                        FileUploaded: function (up, files, response) {
+                            var json = Ext.JSON.decode(response.response);
+                            Ext.MessageBox.alert(json.message);
+                        }
+                    }
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+
+</body>
+</html>
