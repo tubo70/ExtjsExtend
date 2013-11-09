@@ -3,9 +3,10 @@ Ext.define('Ext.ux.button.PluploadButton', {
     alias: ['widget.pluploadbutton'],
     initComponent: function () {
         var me = this;
+
         me.on('render', function (btn, eOpts) {
             btn.uploader = Ext.create('Ext.ux.Plupload', {
-                browseButton: me,
+                browseButton: btn,
                 pluploadConfig: eOpts.pluploadConfig
             });
         }, me, { pluploadConfig: me.pluploadConfig });
@@ -14,5 +15,6 @@ Ext.define('Ext.ux.button.PluploadButton', {
                 btn.uploader.uploader.destroy();
             }
         })
+        me.callParent();
     }
 });
