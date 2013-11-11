@@ -8,48 +8,65 @@
     <script src="container/ContainerOverride.js"></script>
     <script type="application/javascript">
         Ext.onReady(function () {
-            var form = Ext.create('Ext.form.Panel', {
-                renderTo:Ext.getBody(),
+            var panel = Ext.create('Ext.panel.Panel', {
+                renderTo: Ext.getBody(),
                 items: [
                     {
-                        xtype:'textfield',
-                        name:'Name',
-                        fieldLabel:'Name'
-                    },
-                    {
-                        xtype:'fieldcontainer',
-                        fieldLabel:'Field container',
-                        layout:'hbox',
-                        name:'Values',
-                        width:600,
-                        items:[
+                        xtype: 'form',
+                        items: [
                             {
-                                xtype:'textfield',
-                                hideLabel:true,
-                                name:'Value1',
-                                flex:1
+                                xtype: 'textfield',
+                                name: 'Name',
+                                fieldLabel: 'Name'
                             },
                             {
-                                xtype:'textfield',
-                                hideLabel:true,
-                                name:'Value2',
-                                flex:1
+                                xtype: 'textfield',
+                                name: 'Value2',
+                                fieldLabel: 'Name'
+                            },
+                            {
+                                xtype: 'fieldcontainer',
+                                fieldLabel: 'Field container',
+                                preventItemsBubble: false,
+                                layout: 'hbox',
+                                width: 600,
+                                items: [
+                                    {
+                                        xtype: 'textfield',
+                                        hideLabel: true,
+                                        name: 'Value1',
+                                        flex: 1
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        hideLabel: true,
+                                        name: 'Value2',
+                                        flex: 1
+                                    },
+                                    {
+                                        xtype: 'textfield',
+                                        hideLabel: true,
+                                        name: 'Value2',
+                                        flex: 1
+                                    }
+                                ]
+                            },
+                            {
+                                xtype: 'button',
+                                text: 'Display items\'s count',
+                                handler: function () {
+                                    var form = panel.down('form');
+                                    console.log('form.items.getCount():' + form.items.getCount());
+                                    var fieldContainer = form.down('[xtype=fieldcontainer]');
+                                    console.log('fieldContainer.items.getCount():' + fieldContainer.items.getCount());
+                                    var count = 0;
+                                    for (var index in form.allItems) {
+                                        count++;
+                                    }
+                                    console.log('form.allItems count:' + count);
+                                }
                             }
                         ]
-                    },
-                    {
-                        xtype:'button',
-                        text:'Display items\'s count',
-                        handler:function(){
-                            alert('form.items.getCount():' + form.items.getCount());
-                            var fieldContainer = form.down('[name=Values]');
-                            alert('fieldContainer.items.getCount():'+ fieldContainer.items.getCount());
-                            var count=0;
-                            for(var index in form.allItems){
-                                count++;
-                            }
-                            alert('form.allItems count:'+count);
-                        }
                     }
                 ]
             });

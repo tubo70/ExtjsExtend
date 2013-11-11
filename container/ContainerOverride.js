@@ -1,31 +1,44 @@
 Ext.define('Ext.container.ContainerOverride', {
     override: 'Ext.container.Container',
-    allItems: {},
     initComponent: function () {
         var me = this;
-        me.addEvents(
-            'bubblyadd'
-        );
-        me.on('bubblyadd', me.onBubblyadd, me);
+        Ext.applyIf(me, {
+            allItems: {},
+            preventItemsBubble: true
+        });
         me.callParent();
     },
-    onAdd: function (cmp, index) {
+    onAdd: function (cmp) {
         var me = this;
         me.callParent(arguments);
         var name = cmp.itemId || cmp.name;
         if (name) {
-            me.allItems[name] = cmp;
-            if (me.hasListeners.bubblyadd) {
-                me.fireEvent('bubblyadd', cmp, index);
+            if (me.allItems[name]) {
+                me.allItems[name] = Ext.Array.merge(
+                    Ext.Array.from(me.allItems[name]),
+                    [cmp]);
+            }
+            else {
+                me.allItems[name] = cmp;
             }
         }
     },
-    onBubblyadd:function(cmp, index) {
+    onAdded: function (container) {
         var me = this;
-        var name = cmp.itemId || cmp.name;
-        if (name) {
-            me.allItems[name] = cmp;
+        me.callParent(arguments);
+        if (container && me.preventItemsBubble !== true) {
+            for (var name in me.allItems) {
+                if (container.allItems[name]) {
+                    container.allItems[name] = Ext.Array.merge(
+                        Ext.Array.from(container.allItems[name]),
+                        Ext.Array.from(me.allItems[name]));
+                }
+                else {
+                    container.allItems[name] = me.allItems[name];
+                }
+            }
         }
     }
 });
+
 

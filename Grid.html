@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grid 例子</title>
+    <meta charset="UTF-8">
+    <link href="http://cdn.sencha.com/ext/gpl/4.2.0/resources/css/ext-all.css" rel="stylesheet"/>
+    <script src="http://cdn.sencha.com/ext/gpl/4.2.0/ext-all.js"></script>
+    <script src="container/ContainerOverride.js"></script>
+    <script src="ux/grid/gridOverride.js"></script>
+    <script type="application/javascript">
+        Ext.onReady(function () {
+            Ext.create('Ext.data.Store', {
+                storeId: 'simpsonsStore',
+                fields: ['name', 'email', 'phone'],
+                data: {'items': [
+                    { 'name': 'Lisa', "email": "lisa@simpsons.com", "phone": "555-111-1224"  },
+                    { 'name': 'Bart', "email": "bart@simpsons.com", "phone": "555-222-1234" },
+                    { 'name': 'Homer', "email": "home@simpsons.com", "phone": "555-222-1244"  },
+                    { 'name': 'Marge', "email": "marge@simpsons.com", "phone": "555-222-1254"  }
+                ]},
+                proxy: {
+                    type: 'memory',
+                    reader: {
+                        type: 'json',
+                        root: 'items'
+                    }
+                }
+            });
+
+            Ext.create('Ext.grid.Panel', {
+                title: 'Simpsons',
+                store: Ext.data.StoreManager.lookup('simpsonsStore'),
+                noSelectionDisable:['Edit','Delete','Print'],
+                moreSelectionsDisable:['Edit'],
+                selModel: Ext.create('Ext.selection.CheckboxModel', { allowDeselect: true }),
+                tbar: {
+                    xtype: 'toolbar',
+                    preventItemsBubble: false,
+                    items: [
+                        {
+                            xtype: 'button',
+                            itemId: 'Edit',
+                            text: 'Edit'},
+                        {
+                            xtype: 'button',
+                            name: 'Delete',
+                            text: 'Delete'}
+                    ]},
+                dockedItems: [
+                    {
+                        xtype: 'toolbar',
+                        preventItemsBubble: false,
+                        dock: 'right',
+                        items: [
+                            {
+                                xtype: 'button',
+                                name: 'New',
+                                text: 'New'},
+                            {
+                                xtype: 'button',
+                                itemId: 'Edit',
+                                text: 'Edit'}]
+                    }
+                ],
+                columns: [
+                    { text: 'Name', dataIndex: 'name' },
+                    { text: 'Email', dataIndex: 'email', flex: 1 },
+                    { text: 'Phone', dataIndex: 'phone' }
+                ],
+                height: 200,
+                width: 400,
+                renderTo: Ext.getBody()
+            });
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
