@@ -30,8 +30,13 @@
             Ext.create('Ext.grid.Panel', {
                 title: 'Simpsons',
                 store: Ext.data.StoreManager.lookup('simpsonsStore'),
-                noSelectionDisable:['Edit','Delete','Print'],
-                moreSelectionsDisable:['Edit'],
+                buttonDisable: {
+                    noSelection: ['Edit', 'Delete', 'Print'],
+                    moreSelections: ['Edit'],
+                    expressions: {
+                        Edit: '$phone == "555-222-1254"'
+                    }
+                },
                 selModel: Ext.create('Ext.selection.CheckboxModel', { allowDeselect: true }),
                 tbar: {
                     xtype: 'toolbar',
@@ -59,7 +64,8 @@
                             {
                                 xtype: 'button',
                                 itemId: 'Edit',
-                                text: 'Edit'}]
+                                text: 'Edit'}
+                        ]
                     }
                 ],
                 columns: [
